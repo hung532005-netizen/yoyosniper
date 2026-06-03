@@ -1,3 +1,7 @@
+
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from flask import Flask, render_template, request, redirect, session, jsonify
 import pyodbc
 
@@ -224,5 +228,7 @@ def chat():
 # ==========================================
 # RUN APP
 # ==========================================
-if __name__ == "__main__":  # Sửa: name == "main" -> __name__ == "__main__"
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
