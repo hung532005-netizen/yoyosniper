@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thanh Toán – YoYoSniper</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link rel="stylesheet" href="../css/shop.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <div class="logo-ring"></div>
+    <a href="../index.html" class="logo-text">YoYo<span class="accent">Sniper</span></a>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html" class="nav-link">Trang Chủ</a></li>
+    <li><a href="shop.html" class="nav-link">Cửa Hàng</a></li>
+    <li><a href="cart.html" class="nav-link cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-badge" id="cartBadge">0</span></a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+</nav>
+
+<div class="page-header">
+  <h1>Thanh Toán</h1>
+  <p>Điền thông tin để hoàn tất đơn hàng</p>
+</div>
+
+<section class="checkout-section">
+  <div class="container">
+    <div class="checkout-layout">
+
+      <!-- Form -->
+      <div class="checkout-form-card">
+        <h2>Thông Tin Giao Hàng</h2>
+        <p>Vui lòng điền đầy đủ thông tin bên dưới</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Họ và tên *</label>
+            <input type="text" id="fullName" placeholder="Nguyễn Văn A"/>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại *</label>
+            <input type="tel" id="phone" placeholder="0905 123 456"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="email" placeholder="email@example.com"/>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+          <label>Địa chỉ (Tỉnh / Quận / Phường)</label>
+          <div class="address-selects">
+            <select id="selectProvince" onchange="onProvinceChange()">
+              <option value="">-- Chọn Tỉnh/TP --</option>
+            </select>
+            <select id="selectDistrict" onchange="onDistrictChange()" disabled>
+              <option value="">-- Chọn Quận/Huyện --</option>
+            </select>
+            <select id="selectWard" disabled>
+              <option value="">-- Chọn Phường/Xã --</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Địa chỉ cụ thể *</label>
+          <input type="text" id="addressDetail" placeholder="Số nhà, tên đường..."/>
+        </div>
+        <div class="form-group">
+          <label>Lưu ý / Ghi chú</label>
+          <textarea id="note" rows="3" placeholder="Ghi chú cho người giao hàng..."></textarea>
+        </div>
+
+        <!-- Payment method -->
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Phương thức thanh toán</label>
+        </div>
+        <div class="payment-tabs">
+          <button class="payment-tab active" id="tabCOD" onclick="selectPayment('cod')">
+            <i class="fas fa-money-bill-wave"></i>
+            Thanh toán khi<br/>nhận hàng (COD)
+          </button>
+          <button class="payment-tab" id="tabVNPAY" onclick="selectPayment('vnpay')">
+            <i class="fas fa-qrcode"></i>
+            Thanh toán qua<br/>VNPAY QR
+          </button>
+        </div>
+
+        <!-- VNPAY QR section -->
+        <div class="qr-container" id="qrContainer">
+          <div style="font-size:13px;color:var(--gray);margin-bottom:16px;">Quét mã QR để thanh toán qua VNPAY</div>
+          <div class="qr-img" id="qrImg">
+            <!-- QR will be generated -->
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" id="qrSVG" width="200" height="200">
+              <!-- Demo QR code pattern -->
+              <rect width="200" height="200" fill="white"/>
+              <!-- Corners -->
+              <rect x="10" y="10" width="50" height="50" fill="none" stroke="black" stroke-width="8"/>
+              <rect x="22" y="22" width="26" height="26" fill="black"/>
+              <rect x="140" y="10" width="50" height="50" fill="none" stroke="black" stroke-width="8"/>
+              <rect x="152" y="22" width="26" height="26" fill="black"/>
+              <rect x="10" y="140" width="50" height="50" fill="none" stroke="black" stroke-width="8"/>
+              <rect x="22" y="152" width="26" height="26" fill="black"/>
+              <!-- Data pattern -->
+              <rect x="80" y="10" width="8" height="8" fill="black"/>
+              <rect x="96" y="10" width="8" height="8" fill="black"/>
+              <rect x="112" y="10" width="8" height="8" fill="black"/>
+              <rect x="80" y="26" width="8" height="8" fill="black"/>
+              <rect x="112" y="26" width="8" height="8" fill="black"/>
+              <rect x="88" y="42" width="8" height="8" fill="black"/>
+              <rect x="104" y="42" width="8" height="8" fill="black"/>
+              <rect x="72" y="72" width="8" height="8" fill="black"/>
+              <rect x="88" y="72" width="8" height="8" fill="black"/>
+              <rect x="120" y="72" width="8" height="8" fill="black"/>
+              <rect x="136" y="72" width="8" height="8" fill="black"/>
+              <rect x="72" y="88" width="8" height="8" fill="black"/>
+              <rect x="104" y="88" width="8" height="8" fill="black"/>
+              <rect x="128" y="88" width="8" height="8" fill="black"/>
+              <rect x="80" y="104" width="8" height="8" fill="black"/>
+              <rect x="112" y="104" width="8" height="8" fill="black"/>
+              <rect x="136" y="104" width="8" height="8" fill="black"/>
+              <rect x="72" y="120" width="8" height="8" fill="black"/>
+              <rect x="96" y="120" width="8" height="8" fill="black"/>
+              <rect x="120" y="120" width="8" height="8" fill="black"/>
+              <rect x="72" y="136" width="8" height="8" fill="black"/>
+              <rect x="88" y="136" width="8" height="8" fill="black"/>
+              <rect x="104" y="136" width="8" height="8" fill="black"/>
+              <rect x="128" y="136" width="8" height="8" fill="black"/>
+              <rect x="80" y="152" width="8" height="8" fill="black"/>
+              <rect x="112" y="152" width="8" height="8" fill="black"/>
+              <rect x="128" y="152" width="8" height="8" fill="black"/>
+              <rect x="80" y="168" width="8" height="8" fill="black"/>
+              <rect x="96" y="168" width="8" height="8" fill="black"/>
+              <rect x="120" y="168" width="8" height="8" fill="black"/>
+              <rect x="140" y="168" width="8" height="8" fill="black"/>
+              <rect x="148" y="80" width="8" height="8" fill="black"/>
+              <rect x="164" y="80" width="8" height="8" fill="black"/>
+              <rect x="156" y="96" width="8" height="8" fill="black"/>
+              <rect x="148" y="112" width="8" height="8" fill="black"/>
+              <rect x="164" y="112" width="8" height="8" fill="black"/>
+              <rect x="148" y="128" width="8" height="8" fill="black"/>
+              <rect x="164" y="128" width="8" height="8" fill="black"/>
+              <!-- VNPAY text in center -->
+              <text x="100" y="106" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#0066cc">VNPAY</text>
+            </svg>
+          </div>
+          <div class="qr-bank-info">
+            <p>Ngân hàng: <span>Vietcombank</span></p>
+            <p>Số TK: <span>1234 5678 9012</span></p>
+            <p>Chủ TK: <span>NGUYEN VAN A</span></p>
+            <p style="color:#22c55e;margin-top:8px;font-weight:700;" id="qrAmount"></p>
+          </div>
+          <p class="qr-note" style="margin-top:12px;">⚠️ Đây là mã QR demo. Trong môi trường thực tế, mã sẽ được tạo động từ hệ thống VNPAY với thông tin đơn hàng thực.</p>
+        </div>
+
+        <button class="btn-primary" style="width:100%;margin-top:24px;padding:18px;" onclick="submitOrder()">
+          <i class="fas fa-check-circle"></i> Xác Nhận Đặt Hàng
+        </button>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="checkout-order-summary">
+        <h3>Đơn Hàng</h3>
+        <div id="orderItems"></div>
+        <div style="margin-top:20px;">
+          <div class="summary-row"><span>Tạm tính</span><span id="sumSubtotal">0đ</span></div>
+          <div class="summary-row"><span>Phí ship</span><span id="sumShip">30.000đ</span></div>
+          <div class="summary-row total"><span>Tổng</span><span id="sumTotal">0đ</span></div>
+        </div>
+        <div style="margin-top:20px;padding:16px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);border-radius:12px;font-size:13px;line-height:1.6;">
+          <p style="color:var(--orange);font-weight:700;margin-bottom:6px;"><i class="fas fa-shield-alt"></i> Cam Kết</p>
+          <p>✓ Hàng chính hãng 100%</p>
+          <p>✓ Bảo hành 12 tháng</p>
+          <p>✓ Đổi trả 7 ngày</p>
+          <p>✓ Giao hàng 2–3 ngày</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Success Modal -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-modal">
+    <div class="success-icon">🎉</div>
+    <h2>Đặt Hàng Thành Công!</h2>
+    <p>Cảm ơn bạn đã tin tưởng YoYoSniper! Đơn hàng của bạn đang được xử lý.<br/>Chúng tôi sẽ liên hệ xác nhận trong vòng 30 phút.</p>
+    <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:16px;margin-bottom:24px;font-size:13px;" id="successDetails"></div>
+    <a href="shop.html" class="btn-primary">Tiếp Tục Mua Sắm</a>
+  </div>
+</div>
+
+<script src="../js/products.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/address.js"></script>
+<script>
+let paymentMethod = 'cod';
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadOrderSummary();
+  initProvinceSelect();
+  CartManager.updateBadge();
+});
+
+function loadOrderSummary() {
+  const cart = CartManager.get();
+  const container = document.getElementById('orderItems');
+  if (!cart.length) { window.location.href = 'shop.html'; return; }
+
+  container.innerHTML = cart.map(item => `
+    <div class="order-item">
+      <div class="order-item-img">${createYoYoSVG(item.color1, item.color2, item.color3, 56)}</div>
+      <div>
+        <div class="order-item-name">${item.name}</div>
+        <div class="order-item-qty">x${item.qty}</div>
+      </div>
+      <div class="order-item-price">${(item.price * item.qty).toLocaleString('vi-VN')}đ</div>
+    </div>`).join('');
+
+  const sub = CartManager.total();
+  const ship = sub >= 500000 ? 0 : 30000;
+  document.getElementById('sumSubtotal').textContent = sub.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('sumShip').textContent = ship === 0 ? 'Miễn phí' : ship.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('sumTotal').textContent = (sub + ship).toLocaleString('vi-VN') + 'đ';
+  document.getElementById('qrAmount').textContent = 'Số tiền: ' + (sub + ship).toLocaleString('vi-VN') + 'đ';
+}
+
+function initProvinceSelect() {
+  const sel = document.getElementById('selectProvince');
+  Object.keys(VN_ADDRESS).forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p; opt.textContent = p;
+    sel.appendChild(opt);
+  });
+}
+
+function onProvinceChange() {
+  const prov = document.getElementById('selectProvince').value;
+  const distSel = document.getElementById('selectDistrict');
+  const wardSel = document.getElementById('selectWard');
+  distSel.innerHTML = '<option value="">-- Chọn Quận/Huyện --</option>';
+  wardSel.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
+  wardSel.disabled = true;
+
+  if (prov && VN_ADDRESS[prov]) {
+    VN_ADDRESS[prov].districts.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d;
+      distSel.appendChild(opt);
+    });
+    distSel.disabled = false;
+  } else {
+    distSel.disabled = true;
+  }
+}
+
+function onDistrictChange() {
+  const dist = document.getElementById('selectDistrict').value;
+  const wardSel = document.getElementById('selectWard');
+  wardSel.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
+
+  if (dist) {
+    // Generate sample wards
+    const wards = [`Phường ${dist} 1`, `Phường ${dist} 2`, `Phường ${dist} 3`, `Xã ${dist} A`, `Xã ${dist} B`];
+    wards.forEach(w => {
+      const opt = document.createElement('option');
+      opt.value = w; opt.textContent = w;
+      wardSel.appendChild(opt);
+    });
+    wardSel.disabled = false;
+  } else {
+    wardSel.disabled = true;
+  }
+}
+
+function selectPayment(method) {
+  paymentMethod = method;
+  document.getElementById('tabCOD').classList.toggle('active', method === 'cod');
+  document.getElementById('tabVNPAY').classList.toggle('active', method === 'vnpay');
+  const qrContainer = document.getElementById('qrContainer');
+  qrContainer.classList.toggle('show', method === 'vnpay');
+}
+
+function submitOrder() {
+  const name = document.getElementById('fullName').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const province = document.getElementById('selectProvince').value;
+  const district = document.getElementById('selectDistrict').value;
+  const ward = document.getElementById('selectWard').value;
+  const detail = document.getElementById('addressDetail').value.trim();
+  const note = document.getElementById('note').value.trim();
+
+  if (!name || !phone || !email || !province || !district || !detail) {
+    showToast('Vui lòng điền đầy đủ thông tin!', 'error'); return;
+  }
+  if (!/^\d{9,11}$/.test(phone.replace(/\s/g,''))) {
+    showToast('Số điện thoại không hợp lệ!', 'error'); return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showToast('Email không hợp lệ!', 'error'); return;
+  }
+
+  const cart = CartManager.get();
+  const total = CartManager.total();
+  const ship = total >= 500000 ? 0 : 30000;
+  const orderId = 'YYS' + Date.now().toString().slice(-6);
+
+  // Save to localStorage (in real app → SQL DB via API)
+  const order = {
+    id: orderId,
+    customer: { name, phone, email },
+    address: `${detail}, ${ward}, ${district}, ${province}`,
+    note,
+    items: cart,
+    subtotal: total,
+    ship,
+    total: total + ship,
+    payment: paymentMethod,
+    status: 'pending',
+    date: new Date().toISOString()
+  };
+
+  const orders = JSON.parse(localStorage.getItem('yoyo_orders') || '[]');
+  orders.push(order);
+  localStorage.setItem('yoyo_orders', JSON.stringify(orders));
+
+  // Show success
+  document.getElementById('successDetails').innerHTML = `
+    <p>📦 Mã đơn: <strong>${orderId}</strong></p>
+    <p>👤 ${name} – ${phone}</p>
+    <p>📍 ${detail}, ${district}, ${province}</p>
+    <p>💳 ${paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'VNPAY QR'}</p>
+    <p>💰 Tổng: <strong style="color:var(--orange)">${(total+ship).toLocaleString('vi-VN')}đ</strong></p>`;
+
+  document.getElementById('successOverlay').classList.add('show');
+  CartManager.clear();
+}
+</script>
+</body>
+</html>

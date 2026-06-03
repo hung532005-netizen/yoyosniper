@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cửa Hàng – YoYoSniper</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link rel="stylesheet" href="../css/shop.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <div class="logo-ring"></div>
+    <a href="../index.html" class="logo-text">YoYo<span class="accent">Sniper</span></a>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html" class="nav-link" data-page="home">Trang Chủ</a></li>
+    <li><a href="shop.html" class="nav-link active" data-page="shop">Cửa Hàng</a></li>
+    <li><a href="contact.html" class="nav-link" data-page="contact">Liên Hệ</a></li>
+    <li><a href="login.html" class="nav-link" data-page="login" id="loginNavBtn">Đăng Nhập</a></li>
+    <li>
+      <a href="cart.html" class="nav-link cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </li>
+  </ul>
+  <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+</nav>
+
+<div class="page-header">
+  <h1>Cửa Hàng</h1>
+  <p>Khám phá bộ sưu tập YoYo chuyên nghiệp</p>
+</div>
+
+<section class="shop-section">
+  <div class="container">
+    <div class="shop-toolbar">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..."/>
+        <button><i class="fas fa-search"></i></button>
+      </div>
+      <select class="filter-select" id="filterSelect" style="padding-right:18px;">
+        <option value="all">Tất cả sản phẩm</option>
+        <option value="beginner">Người mới</option>
+        <option value="intermediate">Trung cấp</option>
+        <option value="pro">Chuyên nghiệp</option>
+      </select>
+      <select class="filter-select" id="sortSelect" style="padding-right:18px;">
+        <option value="default">Mặc định</option>
+        <option value="price-asc">Giá tăng dần</option>
+        <option value="price-desc">Giá giảm dần</option>
+        <option value="rating">Đánh giá cao</option>
+      </select>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+  </div>
+</section>
+
+<!-- Chatbox -->
+<div class="chatbox-wrapper" id="chatboxWrapper">
+  <button class="chatbox-toggle" id="chatToggle"><i class="fas fa-comments"></i><span class="chat-pulse"></span></button>
+  <div class="chatbox" id="chatbox">
+    <div class="chat-header">
+      <div class="chat-avatar">🪀</div>
+      <div><p class="chat-name">YoYo Assistant</p><span class="chat-status">Online</span></div>
+      <button class="chat-close" id="chatClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg bot">Chào bạn! Cần tư vấn sản phẩm không? 🪀</div>
+    </div>
+    <div class="chat-quick-btns">
+      <button onclick="chatQuick('Sản phẩm nào phù hợp cho người mới?')">Mới bắt đầu</button>
+      <button onclick="chatQuick('Giá YoYo pro bao nhiêu?')">Giá cả</button>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Nhập tin nhắn..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/products.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/chat.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('shopGrid');
+  const search = document.getElementById('searchInput');
+  const filter = document.getElementById('filterSelect');
+  const sort = document.getElementById('sortSelect');
+
+  function renderShop() {
+    grid.innerHTML = '';
+    let products = [...PRODUCTS];
+    const q = search.value.toLowerCase();
+    const cat = filter.value;
+    const s = sort.value;
+
+    if (q) products = products.filter(p => p.name.toLowerCase().includes(q) || p.shortDesc.toLowerCase().includes(q));
+    if (cat !== 'all') products = products.filter(p => p.category === cat);
+    if (s === 'price-asc') products.sort((a,b) => a.price - b.price);
+    if (s === 'price-desc') products.sort((a,b) => b.price - a.price);
+    if (s === 'rating') products.sort((a,b) => b.rating - a.rating);
+
+    if (products.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:80px;color:var(--gray)">
+        <div style="font-size:60px;margin-bottom:20px">🔍</div>
+        <h3 style="font-family:var(--font-display);font-size:28px;margin-bottom:8px;">Không tìm thấy sản phẩm</h3>
+        <p>Thử tìm kiếm với từ khóa khác</p>
+      </div>`;
+      return;
+    }
+    products.forEach(p => renderProductCard(p, grid));
+  }
+
+  renderShop();
+  search.addEventListener('input', renderShop);
+  filter.addEventListener('change', renderShop);
+  sort.addEventListener('change', renderShop);
+});
+</script>
+</body>
+</html>
