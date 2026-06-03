@@ -1,1 +1,4 @@
-flask gunicorn flask-mysqldb pymysql
+flask
+ gunicorn
+  flask-mysqldb
+   pymysql
